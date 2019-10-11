@@ -1,0 +1,55 @@
+{
+  "name": "mfapp",
+  "version": "0.0.1",
+  "description": "micro frontend",
+  "main": "dist/mfapp.js",
+  "module": "dist/mfapp.esm.js",
+  "scripts": {
+    "build": "rollup -c",
+    "check": "run-p fmt-check lint",
+    "dev": "rollup -c --watch",
+    "fix": "run-s \"lint -- --fix\"",
+    "fmt": "run-s \"fmt-check -- --write\"",
+    "fmt-check": "prettier --check **/*.{md,json,ts}",
+    "lint": "eslint **/*.ts",
+    "serve": "serve ./demo/",
+    "type": "tsc --project tsconfig.json --skipLibCheck --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnkorty/mfapp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arnkorty/mfapp/issues"
+  },
+  "homepage": "https://github.com/arnkorty/mfapp",
+  "devDependencies": {
+    "@rollup/plugin-replace": "^2.3.3",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^10.12.24",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.5",
+    "husky": "^4.2.5",
+    "jest": "^24.1.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "rollup": "^2.23.0",
+    "rollup-plugin-typescript2": "^0.27.1",
+    "serve": "^11.3.2",
+    "ts-jest": "^26.1.4",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "run-p fmt fix; git add ."
+    }
+  }
+}
