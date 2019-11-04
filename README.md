@@ -1,27 +1,34 @@
 # Getting Started
-## Install
-```shell
-# waiting...
-```
+
+## 迷你版简化版前端微服务框架
 
 ## Usage
 ```javascript
-import app, { store, h } from acapp;
-const Counter = app.HTML({
-  name: 'Counter'
-  state: {},
-  method: {
-  },
-  hook: {
-  },
-  view: () = (state) => {
-    return (<div>
-      <h1>${state}</h1>
-      <button onclick='add(-1)'>-1</button>
-      <button onclick='add(+1)'>+1</button>
-    </div>) 
-  },
+import {mfAppRegister, mfAppRun} from 'mfapp';
+mfAppRegister({
+  name: 'react-app',
+  entry: 'http://localhost:2344/reactapp',
+  match: (location) => location.href === '/react-app',
+  hooks: {
+    mounted: () => {},
+    unmounted: () => {},
+    bootstrap: () => {}
+  }
 })
+mfAppRegister({
+  name: 'vue-app',
+  entry: 'http://localhost:2344/vueapp',
+  match: (location) => location.href === '/vue-app',
+  hooks: {
+    mounted: () => {},
+    unmounted: () => {},
+    bootstrap: () => {}
+  }
+})
+mfAppRun()
+```
 
-app.mount('#app', Counter)
+```html
+<react-app />
+<vue-app />
 ```

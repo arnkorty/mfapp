@@ -14,7 +14,7 @@ const routingEventsListeningTo = ['hashchange', 'popstate']
 let started = false
 const apps = new Set()
 
-export function register(name, entry, match, hooks = {}) {
+export function register({ name, entry, match, hooks = {} }) {
   apps.add({
     name,
     entry,
