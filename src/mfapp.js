@@ -78,7 +78,7 @@ function getAppChanges() {
         isActive && creates.push(app)
         break
       case Status.NOT_SETUPPED:
-      case Status.SETUPPING:
+      case Status.BOOTSTRAPING
       case Status.NOT_MOUNTED:
         isActive && mounts.push(app)
         break
@@ -99,6 +99,9 @@ async function runCreate(app) {
   if (app.created) return app.created
   app.created = Promise.resolve().then(async () => {
     app.status = Status.CREATING
+    if (app.hooks && app.hooks.bootstrap) {
+      await app.hooks.bootstrap()
+    }
     app.host = await createShadowDOM(app)
     const { lifecycle: selfLife, bodyNode, styleNodes } = await importHtml(app)
     app.host.shadowRoot &&
@@ -107,6 +110,18 @@ async function runCreate(app) {
       app.host.shadowRoot &&
         app.host.shadowRoot.insertBefore(k, app.host.shadowRoot.firstChild)
     app.status = Status.NOT_SETUPPED
+    const getLifeMethods = (name) => {
+      const method = app.hooks ? app.hooks[name] : null
+      if (method) {
+        return [method]
+      }
+      return []
+    }
+    app.bootstrap = compose(
+      getLifeMethods('bootstrap').concat(selfLife.bootstrap)
+    )
+    app.mount = compose(getLifeMethods('mounted').concat(selfLife.mount))
+    app.unmount = compose(getLifeMethods('unmounted').concat(selfLife.unmount))
     delete app.created
     return app
   })
@@ -148,8 +163,8 @@ async function runSetup(app) {
   if (app.status !== Status.NOT_SETUPPED) {
     return app
   }
-  app.status = Status.SETUPPING
-  await app.setup(app)
+  app.status = Status.bootstrapPING
+  await app.bootstrap(app)
   app.status = Status.NOT_MOUNTED
   return app
 }

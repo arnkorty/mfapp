@@ -54,7 +54,7 @@ export async function loadScript(template, global, name) {
   let mount = []
   scriptsToLoad.forEach((script) => {
     const lifecycles = runScript(script, global, name)
-    setup = [...setup, lifecycles.setup]
+    setup = [...bootstrap, lifecycles.bootstrap]
     mount = [...mount, lifecycles.mount]
     unmount = [...unmount, lifecycles.unmount]
   })
